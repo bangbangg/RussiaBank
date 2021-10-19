@@ -14,6 +14,8 @@ const SlideInputContainer = ({ headingText, inputType }) => {
 
   const innerText = inputType === 'rub'? '₽' : 'дней';
 
+  const tooltipContent = inputType === 'rub'? 2 : 1 ;
+
   return (
     <div className='slide-container'>
       <h3 className='small-heading'>
@@ -42,7 +44,7 @@ const SlideInputContainer = ({ headingText, inputType }) => {
             />
           </Box>
         </div>
-        <TooltipIcon symbol={'?'} />
+        <TooltipIcon symbol={'?'} tooltipContent={tooltipContent}/>
       </div>
     </div>
   );

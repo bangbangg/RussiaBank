@@ -43,6 +43,7 @@
 
   .tooltip-icon {
     cursor: pointer;
+    position: relative;
     min-width: 23px;
     min-height: 24px;
     border-radius: 12px;
@@ -56,6 +57,53 @@
       font-family: 'Roboto';
       font-size: 14px;
       line-height: 16px;
+    }
+
+    &__popup {
+      position: absolute;
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      padding: 16px;
+      z-index: 200;
+      width: 212px;
+      height: 98px;
+      border: 1px solid #C4C4C4;
+      border-radius: 8px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      background-color: white;
+      left: calc(100% + 10px);
+      top: -20px;
+
+      &-heading {
+        max-width: 180px;
+        width: 100%;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+      }
+
+      &-content {
+        max-width: 180px;
+        width: 100%;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      &-arrow {
+        position: absolute;
+        border-left: 1px solid #C4C4C4;
+        border-bottom: 1px solid #C4C4C4;
+        z-index: 210;
+        transform: rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        left: calc(100% + 5px);
+        bottom: 8px;
+      }
     }
   }
 }
