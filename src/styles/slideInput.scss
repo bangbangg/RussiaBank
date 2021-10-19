@@ -1,0 +1,26 @@
+.slide-container {
+  min-width: 511px;
+  min-height: 95px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .tooltip-icon {
+    cursor: pointer;
+    min-width: 23px;
+    min-height: 24px;
+    border-radius: 12px;
+    background-color: #F1F5F7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__content {
+      color: #1272AE;
+      font-family: 'Roboto';
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+}

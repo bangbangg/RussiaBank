@@ -6,11 +6,36 @@
   height: 100%;
   border: 1px solid black;
 
-  &__header {
-    color: #000000;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 36px;
-    margin-bottom: 32px;
+  &__content {
+    min-height: 498px;
+    width: 100%;
+
+    &-top {
+      min-height: 394px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      &-left {
+        display: flex;
+        flex-direction: column;
+        min-width: 511px;
+        justify-content: start;
+
+        .left-content__header {
+          color: #000000;
+          font-weight: 500;
+          font-size: 30px;
+          line-height: 36px;
+          margin-bottom: 32px;
+        }
+      }
+
+      &-right {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+      }
+    }
   }
 }
