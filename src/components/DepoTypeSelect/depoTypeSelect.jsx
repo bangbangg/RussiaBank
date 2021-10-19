@@ -16,7 +16,7 @@ const DepoTypeSelect = ({ data }) => {
   const selectedFieldName = data.find(item => item.code === depoType).name;
 
   return(
-    <div>
+    <div className='select-container'>
       <InputLabel variant='standard' htmlFor='main-select'>
         Вклад
       </InputLabel>
