@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import TooltipIcon from './tooltipIcon/tooltipIcon';
@@ -6,15 +7,26 @@ import TooltipIcon from './tooltipIcon/tooltipIcon';
 
 const SlideInputContainer = ({ headingText, inputType }) => {
 
-  const [value, setValue] = useState(10);
+  const isThatMoneyInput = inputType === 'rub';
+
+  const depositType = useSelector(state => state.depositDetails.depositType);
+  const deposits = useSelector(state => state.depositDetails.deposits);
+
+  const currentParams = deposits.find(item => item.code === depositType).param;
+
+  const minDaysValue = !isThatMoneyInput && currentParams[0].period_from;
+
+  const initialValue = isThatMoneyInput? currentParams[0].summs_and_rate[0].summ_from : currentParams[0].period_from;
+
+  const [value, setValue] = useState(initialValue);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const innerText = inputType === 'rub'? '₽' : 'дней';
+  const innerText = isThatMoneyInput? '₽' : 'дней';
 
-  const tooltipContent = inputType === 'rub'? 2 : 1 ;
+  const tooltipContent = isThatMoneyInput? 2 : 1 ;
 
   return (
     <div className='slide-container'>
@@ -37,10 +49,9 @@ const SlideInputContainer = ({ headingText, inputType }) => {
               defaultValue={value}
               onChange={handleChange}
               valueLabelDisplay="auto"
-              step={10}
-              marks
-              min={10}
-              max={110}
+              step={isThatMoneyInput? 100000 : 1}
+              min={isThatMoneyInput? 0 : minDaysValue}
+              max={isThatMoneyInput? 99999999999 : 365}
             />
           </Box>
         </div>

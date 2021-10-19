@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import * as actionCreators from '../../store/actions';
 
 
-const DepoTypeSelect = ({ data }) => {
-  const [depoType, setDepoType] = useState('unic');
+const DepoTypeSelect = () => {
+
+  const dispatch = useDispatch();
+
+  const depositType = useSelector(state => state.depositDetails.depositType);
+  const deposits = useSelector(state => state.depositDetails.deposits);
+
+  const currentParams = deposits.find(item => item.code === depositType).param;
 
   const handleChange = (ev) => {
-    setDepoType(ev.target.value);
+    dispatch(actionCreators.setDepositType(ev.target.value));
   };
 
-  const availableSelects = data.filter(item => item.code !== depoType);
-  const selectedFieldName = data.find(item => item.code === depoType).name;
+  const availableSelects = deposits.filter(item => item.code !== depositType);
+  const selectedFieldName = deposits.find(item => item.code === depositType).name;
 
   return(
     <div className='select-container'>
@@ -22,11 +30,11 @@ const DepoTypeSelect = ({ data }) => {
       </InputLabel>
       <FormControl sx={{ m: 1, minWidth: 472, margin: '8px 0 0 0' }}>
         <Select
-          value={depoType}
+          value={depositType}
           onChange={handleChange}
           inputProps={{ id: 'main-select' }}
         >
-          <MenuItem value={depoType}>
+          <MenuItem value={depositType}>
             <div>{selectedFieldName}</div>
           </MenuItem>
           {

@@ -1,13 +1,19 @@
 import React from 'react';
-import { MOCKED_DATA } from './response/depcalc';
+import { useSelector } from 'react-redux';
+import Button from '@mui/material/Button';
 import DepoTypeSelect from './components/DepoTypeSelect/depoTypeSelect';
 import SlideInputContainer from './components/slideInput/slideInputContainer';
-import Button from '@mui/material/Button';
 import creditImg from '../src/assets/img/credit.png';
 import infoSignImg from '../src/assets/img/bottomSign.png';
+import { MOCKED_DATA } from './response/depcalc';
 
 
 function App() {
+
+  const depositType = useSelector(state => state.depositDetails.depositType);
+  const deposits = useSelector(state => state.depositDetails.deposits);
+
+  const currentParams = deposits.find(item => item.code === depositType).param;
 
   return (
     <div className='centered-content'>
@@ -18,7 +24,7 @@ function App() {
               <h1 className='left-content__header'>
                 Депозитный калькулятор
               </h1>
-              <DepoTypeSelect data={MOCKED_DATA.deposits} />
+              <DepoTypeSelect />
               <SlideInputContainer headingText={'Срок кредита'} inputType={'days'} />
               <SlideInputContainer headingText={'Ежемесячный платеж'} inputType={'rub'} />
             </div>
