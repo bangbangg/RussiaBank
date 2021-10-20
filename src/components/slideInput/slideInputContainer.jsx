@@ -31,23 +31,23 @@ const SlideInputContainer = ({ headingText, value, setValue, currentConditions }
   }, [value])
 
   const handleChange = (ev) => {
-    const currentValue = +`${ev.target.value}`.replace(/[^0-9]/g, '')
+    const currentValue = +`${ev.target.value}`.replace(/[^0-9]/g, '');
     console.log(typeof currentValue);
     if (minValue <= currentValue && maxValue >= currentValue) {
       setValue(currentValue)
     }
     else if (maxValue < currentValue){
-      setDisplayedValue(maxValue)
+      setDisplayedValue(maxValue);
       setValue(maxValue)
     } else {
-      setDisplayedValue(currentValue)
+      setDisplayedValue(currentValue);
     }
   };
 
   const setValueIfEmpty = (ev) => {
     if (!ev.target.value || ev.target.value < minValue) {
       setValue(minValue);
-      setDisplayedValue(minValue);
+      setDisplayedValue(minValue)
     }
   }
 

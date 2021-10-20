@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 
 const TooltipIcon = ({ symbol, tooltipContent }) => {
-
   const [isShown, setIsShown] = useState(false);
 
   return (

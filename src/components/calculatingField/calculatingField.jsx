@@ -3,7 +3,6 @@ import { declOfNum } from '../../util/misk';
 
 
 const CalculatingField = ({ heading, fieldValue, isThatMoneyField, daysValue }) => {
-
   return (
     <div className='center-content__block'>
       {

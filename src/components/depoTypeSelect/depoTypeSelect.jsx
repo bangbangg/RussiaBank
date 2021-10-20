@@ -8,7 +8,6 @@ import * as actionCreators from '../../store/actions';
 
 
 const DepoTypeSelect = () => {
-
   const dispatch = useDispatch();
 
   const depositType = useSelector(state => state.depositDetails.depositType);
