@@ -11,3 +11,13 @@ export function declOfNum(number, words, isThatMainPage) {
 
   return isThatMainPage? `${number} ${words[idx]}` : words[idx] ;
 }
+
+export function printPDF() {
+  const content = document.getElementById('divcontents');
+  const pri = document.getElementById('ifmcontentstoprint').contentWindow;
+  pri.document.open();
+  pri.document.write(content.innerHTML);
+  pri.document.close();
+  pri.focus();
+  pri.print();
+}

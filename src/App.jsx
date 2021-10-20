@@ -7,13 +7,14 @@ import SlideInputContainer from './components/slideInput/slideInputContainer';
 import CalculatingField from './components/calculatingField/calculatingField';
 import creditImg from '../src/assets/img/credit.png';
 import infoSignImg from '../src/assets/img/bottomSign.png';
+import { printPDF } from './util/misk';
+import PdfPrintContent from './components/pdfPrintContent/pdfPrintContent';
 
 
 const MAX_MONEY_COUNT = 99999999999;
 const MAX_DAYS_COUNT = 365;
 
 function App() {
-
   const depositType = useSelector(state => state.depositDetails.depositType);
   const deposits = useSelector(state => state.depositDetails.deposits);
 
@@ -58,7 +59,7 @@ function App() {
   const summAfterChoosenPeriod = () => {
     const daysInYear = moment().isLeapYear() ? 366 : 365;
     const moneyFromPercent = moneyValue * currentPercent * 0.01 * daysValue/daysInYear;
-    return +moneyValue + Math.round(moneyFromPercent * 100)/100
+    return +moneyValue + Math.round(moneyFromPercent * 100) / 100
   }
 
   const profitAfterChoosenPeriod = Math.round((summAfterChoosenPeriod() - moneyValue) * 100)/100;
@@ -67,6 +68,13 @@ function App() {
 
   return (
     <div className='centered-content'>
+      <PdfPrintContent
+        daysValue={daysValue}
+        moneyValue={moneyValue}
+        percent={currentPercent}
+        summ={summAfterChoosenPeriod()}
+        profit={profitAfterChoosenPeriod}
+      />
       <div className='body-container'>
         <div className='body-container__content'>
           <div className='body-container__content-top'>
@@ -115,6 +123,7 @@ function App() {
             <Button
               className='bottom-content__button'
               variant="contained"
+              onClick={() => printPDF()}
             >
               Продолжить
             </Button>

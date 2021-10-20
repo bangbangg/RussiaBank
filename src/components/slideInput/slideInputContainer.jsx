@@ -62,7 +62,7 @@ const SlideInputContainer = ({ headingText, value, setValue, currentConditions }
       </h3>
       <div className='slide-container-content'>
         <div className='slide-container__input-field'>
-          <FormControl sx={{ mt: 1, width: 472, padding: '0 20px' }}>
+          <FormControl sx={{ mt: 1.5, width: 472, padding: '0 20px' }}>
             <Input
               value={displayedValue}
               onBlur={setValueIfEmpty}
