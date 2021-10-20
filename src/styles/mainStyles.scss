@@ -51,16 +51,19 @@
     }
 
     &-center {
-      max-width: 750px;
       min-height: 56px;
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
 
       .center-content__block {
         display: flex;
         flex-direction: column;
+
+        &:first-child {
+          margin-right: 100px;
+        }
 
         &-heading {
           color: #7E878E;
@@ -68,6 +71,13 @@
           line-height: 18px;
           font-weight: 400;
           margin-bottom: 8px;
+
+          .block-heading__underlined-text {
+            cursor: pointer;
+            border-bottom: 1px solid #489DCF;
+            color: #489DCF;
+            margin-left: 3px;
+          }
         }
 
         &-text {

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
-import DepoTypeSelect from './components/DepoTypeSelect/depoTypeSelect';
+import moment from 'moment';
+import DepoTypeSelect from './components/depoTypeSelect/depoTypeSelect';
 import SlideInputContainer from './components/slideInput/slideInputContainer';
+import CalculatingField from './components/calculatingField/calculatingField';
 import creditImg from '../src/assets/img/credit.png';
 import infoSignImg from '../src/assets/img/bottomSign.png';
-import { MOCKED_DATA } from './response/depcalc';
 
+
+const MAX_MONEY_COUNT = 99999999999;
+const MAX_DAYS_COUNT = 365;
 
 function App() {
 
@@ -14,6 +18,52 @@ function App() {
   const deposits = useSelector(state => state.depositDetails.deposits);
 
   const currentParams = deposits.find(item => item.code === depositType).param;
+
+  const [currentConditions, setCurrentConditions] = useState(currentParams[0].summs_and_rate);
+  const [moneyValue, setMoneyValue] = useState(currentParams[0].summs_and_rate[0].summ_from);
+  const [daysValue, setDaysValue] = useState(currentParams[0].period_from);
+
+  const limitDayValues = [...currentParams?.map(param => param.period_from), MAX_DAYS_COUNT];
+  const limitMoneyValues = [...currentConditions?.map(condition => condition.summ_from), MAX_MONEY_COUNT];
+
+  const getLimits = (limitsValues, type) => {
+    const limitsArray = [];
+    const lastLimit = type === 'money'? MAX_MONEY_COUNT : MAX_DAYS_COUNT;
+    for (let i=0; i < limitsValues.length - 1; i++) {
+      const endOfPeriod = limitsValues[i+1] === lastLimit ? limitsValues[i+1] : limitsValues[i+1] - 1;
+      limitsArray.push({from: limitsValues[i], to: endOfPeriod});
+    }
+    return limitsArray;
+  }
+
+  const daysLimitsArray = getLimits(limitDayValues, 'days');
+  const moneyLimitsArray =  getLimits(limitMoneyValues, 'money');
+
+  const currentPercentIndex = moneyLimitsArray.findIndex(limit => limit.from <= moneyValue && limit.to >= moneyValue);
+  const currentPercent = currentConditions[currentPercentIndex]?.rate;
+
+  useEffect(() => {
+    const periodIndex = daysLimitsArray.findIndex(limit => limit.from <= daysValue && limit.to >= daysValue);
+    setCurrentConditions(currentParams[periodIndex].summs_and_rate)
+  }, [daysValue])
+
+  useEffect(() => {
+    setDaysValue(currentParams[0].period_from);
+  },[currentParams])
+
+  useEffect(() => {
+    setMoneyValue(currentConditions[0].summ_from);
+  },[currentConditions])
+
+  const summAfterChoosenPeriod = () => {
+    const daysInYear = moment().isLeapYear() ? 366 : 365;
+    const moneyFromPercent = moneyValue * currentPercent * 0.01 * daysValue/daysInYear;
+    return +moneyValue + Math.round(moneyFromPercent * 100)/100
+  }
+
+  const profitAfterChoosenPeriod = Math.round((summAfterChoosenPeriod() - moneyValue) * 100)/100;
+
+  const summPartsToDisplay = (summ) => `${summ}`.split('.');
 
   return (
     <div className='centered-content'>
@@ -25,42 +75,40 @@ function App() {
                 Депозитный калькулятор
               </h1>
               <DepoTypeSelect />
-              <SlideInputContainer headingText={'Срок кредита'} inputType={'days'} />
-              <SlideInputContainer headingText={'Ежемесячный платеж'} inputType={'rub'} />
+              <SlideInputContainer
+                headingText={'Срок вклада'}
+                value={daysValue}
+                setValue={setDaysValue}
+              />
+              <SlideInputContainer
+                headingText={'Сумма вклада'}
+                value={moneyValue}
+                setValue={setMoneyValue}
+                currentConditions={currentConditions}
+              />
             </div>
             <div className='body-container__content-top-right'>
               <img alt='credit' src={creditImg} className='right-content__image' />
             </div>
           </div>
+
           <div className='body-container__content-center'>
-
-            <div className='center-content__block'>
-              <span className='center-content__block-heading'>Процентная ставка</span>
-              <span className='center-content__block-text'>12,1%</span>
-            </div>
-
-            <div className='center-content__block'>
-              <span className='center-content__block-heading'>Сумма кредита</span>
-              <div className='center-content__block-text'>
-                454 146 366
-                <span className='center-content__block-text gray'>,00 ₽</span>
-              </div>
-            </div>
-
-            <div className='center-content__block'>
-              <span className='center-content__block-heading'>Доход</span>
-              <div className='center-content__block-text'>
-                <span className='center-content__block-text-small'>от</span>
-                203 155
-                <span className='center-content__block-text gray'>
-                  ,00 ₽/
-                  <span className='center-content__block-text-small gray'>
-                    мес
-                  </span>
-                </span>
-              </div>
-            </div>
-
+            <CalculatingField
+              isThatMoneyField={false}
+              heading={'Процентная ставка'}
+              fieldValue={currentPercent}
+            />
+            <CalculatingField
+              isThatMoneyField={true}
+              heading={'Сумма через'}
+              daysValue={daysValue}
+              fieldValue={summPartsToDisplay(summAfterChoosenPeriod())}
+            />
+            <CalculatingField
+              isThatMoneyField={true}
+              heading={'Доход'}
+              fieldValue={summPartsToDisplay(profitAfterChoosenPeriod)}
+            />
           </div>
 
           <div className='body-container__content-bottom'>

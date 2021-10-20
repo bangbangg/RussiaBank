@@ -14,8 +14,6 @@ const DepoTypeSelect = () => {
   const depositType = useSelector(state => state.depositDetails.depositType);
   const deposits = useSelector(state => state.depositDetails.deposits);
 
-  const currentParams = deposits.find(item => item.code === depositType).param;
-
   const handleChange = (ev) => {
     dispatch(actionCreators.setDepositType(ev.target.value));
   };

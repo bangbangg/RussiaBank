@@ -39,6 +39,16 @@
       align-items: center;
       justify-content: space-between;
     }
+
+    [class*='MuiInput-root'] {
+      &:before {
+        border: none !important;
+      }
+
+      &:after {
+        border: none !important;
+      }
+    }
   }
 
   .tooltip-icon {
