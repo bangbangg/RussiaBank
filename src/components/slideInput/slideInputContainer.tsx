@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import TooltipIcon from './tooltipIcon/tooltipIcon';
-import { declOfNum } from '../../util/misk';
 import { IDepositDetails, ISummsAndRate, stateType } from '../../typesTS/mainTypes';
 
 
@@ -57,7 +56,7 @@ const SlideInputContainer:React.FC<ISlideInputContainer> = ({ headingText, value
     }
   }
 
-  const innerText = currentConditions? '₽' : declOfNum(value, ['день', 'дня', 'дней'], false);
+  const innerText = currentConditions? '₽' : 'дней';
 
   const tooltipContent = currentConditions? 2 : 1 ;
 

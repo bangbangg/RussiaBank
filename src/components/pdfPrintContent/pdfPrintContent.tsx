@@ -16,7 +16,7 @@ const PdfPrintContent:React.FC<IPdfPrintContent> = ({ daysValue, moneyValue, per
   const { depositType } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
   const { deposits } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
 
-  const numberOfDays = declOfNum(daysValue, ['день', 'дня', 'дней'], true)
+  const numberOfDays = declOfNum(daysValue, ['день', 'дня', 'дней'])
 
   return(
     <iframe id="ifmContentsToPrint" style={{ height: '0px', width: '0px', position: 'absolute' }}>

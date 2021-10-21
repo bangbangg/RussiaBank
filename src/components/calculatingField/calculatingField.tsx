@@ -23,7 +23,7 @@ const CalculatingField:React.FC<ICalculatingFieldProps> = ({ heading, fieldValue
             {
               daysValue &&
               <span className='block-heading__underlined-text'>
-                {declOfNum(daysValue, ['день', 'дня', 'дней'], true)}
+                {declOfNum(daysValue, ['день', 'дня', 'дней'])}
               </span>
             }
           </span>

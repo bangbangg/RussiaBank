@@ -1,4 +1,4 @@
-export function declOfNum(number:number, words:string[], isThatMainPage:boolean) {
+export function declOfNum(number:number, words:string[]) {
   const ofSecondType = number % 100 > 4 && number % 100 < 20;
 
   let idx;
@@ -9,7 +9,7 @@ export function declOfNum(number:number, words:string[], isThatMainPage:boolean)
     idx = [2, 0, 1, 1, 1, 2][Math.min(5, idxInDecade)]
   }
 
-  return isThatMainPage? `${number} ${words[idx]}` : words[idx] ;
+  return `${number} ${words[idx]}`;
 }
 
 export function printPDF() {
