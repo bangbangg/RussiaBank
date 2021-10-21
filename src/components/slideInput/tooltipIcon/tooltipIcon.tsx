@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 
 
-const TooltipIcon = ({ symbol, tooltipContent }) => {
-  const [isShown, setIsShown] = useState(false);
+interface ITooltipIcon {
+  symbol: string,
+  tooltipContent: string|number
+}
+
+const TooltipIcon:React.FC<ITooltipIcon> = ({ symbol, tooltipContent }) => {
+  const [isShown, setIsShown] = useState<boolean>(false);
 
   return (
     <div

@@ -9,25 +9,26 @@ import creditImg from '../src/assets/img/credit.png';
 import infoSignImg from '../src/assets/img/bottomSign.png';
 import { printPDF } from './util/misk';
 import PdfPrintContent from './components/pdfPrintContent/pdfPrintContent';
+import { IDepositDetails, ISummsAndRate, stateType } from './typesTS/mainTypes';
 
 
 const MAX_MONEY_COUNT = 99999999999;
 const MAX_DAYS_COUNT = 365;
 
 function App() {
-  const depositType = useSelector(state => state.depositDetails.depositType);
-  const deposits = useSelector(state => state.depositDetails.deposits);
+  const { depositType } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
+  const { deposits } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
 
-  const currentParams = deposits.find(item => item.code === depositType).param;
+  const currentParams = deposits.filter(item => item.code === depositType)[0].param;
 
-  const [currentConditions, setCurrentConditions] = useState(currentParams[0].summs_and_rate);
-  const [moneyValue, setMoneyValue] = useState(currentParams[0].summs_and_rate[0].summ_from);
-  const [daysValue, setDaysValue] = useState(currentParams[0].period_from);
+  const [currentConditions, setCurrentConditions] = useState<ISummsAndRate[]>(currentParams[0].summs_and_rate);
+  const [moneyValue, setMoneyValue] = useState<number>(currentParams[0].summs_and_rate[0].summ_from);
+  const [daysValue, setDaysValue] = useState<number>(currentParams[0].period_from);
 
   const limitDayValues = [...currentParams?.map(param => param.period_from), MAX_DAYS_COUNT];
   const limitMoneyValues = [...currentConditions?.map(condition => condition.summ_from), MAX_MONEY_COUNT];
 
-  const getLimits = (limitsValues, type) => {
+  const getLimits = (limitsValues:number[], type:string) => {
     const limitsArray = [];
     const lastLimit = type === 'money'? MAX_MONEY_COUNT : MAX_DAYS_COUNT;
     for (let i=0; i < limitsValues.length - 1; i++) {
@@ -63,8 +64,6 @@ function App() {
   }
 
   const profitAfterChoosenPeriod = Math.round((summAfterChoosenPeriod() - moneyValue) * 100)/100;
-
-  const summPartsToDisplay = (summ) => `${summ}`.split('.');
 
   return (
     <div className='centered-content'>
@@ -110,12 +109,12 @@ function App() {
               isThatMoneyField={true}
               heading={'Сумма через'}
               daysValue={daysValue}
-              fieldValue={summPartsToDisplay(summAfterChoosenPeriod())}
+              fieldValue={summAfterChoosenPeriod()}
             />
             <CalculatingField
               isThatMoneyField={true}
               heading={'Доход'}
-              fieldValue={summPartsToDisplay(profitAfterChoosenPeriod)}
+              fieldValue={profitAfterChoosenPeriod}
             />
           </div>
 

@@ -2,7 +2,17 @@ import React from 'react';
 import { declOfNum } from '../../util/misk';
 
 
-const CalculatingField = ({ heading, fieldValue, isThatMoneyField, daysValue }) => {
+interface ICalculatingFieldProps {
+  heading: string,
+  fieldValue: number,
+  isThatMoneyField: boolean,
+  daysValue?: number
+}
+
+const CalculatingField:React.FC<ICalculatingFieldProps> = ({ heading, fieldValue, isThatMoneyField, daysValue }) => {
+
+  const summPartsToDisplay = (summ:number) => `${summ}`.split('.');
+
   return (
     <div className='center-content__block'>
       {
@@ -18,9 +28,9 @@ const CalculatingField = ({ heading, fieldValue, isThatMoneyField, daysValue }) 
             }
           </span>
           <div className='center-content__block-text'>
-            {fieldValue[0]}
+            {summPartsToDisplay(fieldValue)[0]}
             <span className='center-content__block-text gray'>
-              ,{fieldValue[1] || '00'} ₽
+              ,{summPartsToDisplay(fieldValue)[1] || '00'} ₽
             </span>
           </div>
         </div>

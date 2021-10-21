@@ -7,32 +7,38 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import TooltipIcon from './tooltipIcon/tooltipIcon';
 import { declOfNum } from '../../util/misk';
+import { IDepositDetails, ISummsAndRate, stateType } from '../../typesTS/mainTypes';
 
+
+interface ISlideInputContainer {
+  headingText: string,
+  value: number,
+  setValue: Function,
+  currentConditions?: ISummsAndRate[]
+}
 
 const MAX_MONEY_COUNT = 99999999999;
 const MAX_DAYS_COUNT = 365;
 
-const SlideInputContainer = ({ headingText, value, setValue, currentConditions }) => {
+const SlideInputContainer:React.FC<ISlideInputContainer> = ({ headingText, value, setValue, currentConditions }) => {
 
-  const depositType = useSelector(state => state.depositDetails.depositType);
-  const deposits = useSelector(state => state.depositDetails.deposits);
+  const { depositType } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
+  const { deposits } = useSelector(({depositDetails}:stateType<IDepositDetails>) => depositDetails);
 
-  const currentParams = deposits.find(item => item.code === depositType).param;
+  const currentParams = deposits.filter(item => item.code === depositType)[0].param;
 
   const maxValue = currentConditions? MAX_MONEY_COUNT : MAX_DAYS_COUNT;
-  const minValue = currentConditions? currentConditions[0].summ_from : currentParams[0].period_from;
+  const minValue = currentConditions ? currentConditions[0].summ_from : currentParams[0].period_from;
 
-  const [displayedValue, setDisplayedValue] = useState(value)
-
-  console.log(value);
+  const [displayedValue, setDisplayedValue] = useState<number>(value)
 
   useEffect(() => {
     setDisplayedValue(value)
   }, [value])
 
-  const handleChange = (ev) => {
-    const currentValue = +`${ev.target.value}`.replace(/[^0-9]/g, '');
-    console.log(typeof currentValue);
+  const handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | Event) => {
+    const element = ev.target as HTMLInputElement;
+    const currentValue = +`${element.value}`.replace(/[^0-9]/g, '');
     if (minValue <= currentValue && maxValue >= currentValue) {
       setValue(currentValue)
     }
@@ -44,8 +50,8 @@ const SlideInputContainer = ({ headingText, value, setValue, currentConditions }
     }
   };
 
-  const setValueIfEmpty = (ev) => {
-    if (!ev.target.value || ev.target.value < minValue) {
+  const setValueIfEmpty = (ev: React.FocusEvent<HTMLInputElement | HTMLInputElement>) => {
+    if (!ev.target.value || +ev.target.value < minValue) {
       setValue(minValue);
       setDisplayedValue(minValue)
     }
